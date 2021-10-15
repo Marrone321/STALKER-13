@@ -3,7 +3,6 @@
 // For the record: these should never ever ever be deleted, even if the turf doesn't have dynamic lighting.
 
 /datum/lighting_corner
-	var/list/turf/masters
 	var/turf/northeast
 	var/turf/northwest
 	var/turf/southeast
@@ -30,10 +29,6 @@
 /datum/lighting_corner/New(turf/new_turf, diagonal)
 	. = ..()
 
-	masters = list()
-	masters[new_turf] = turn(diagonal, 180)
-	z = new_turf.z
-
 #define SET_DIAGONAL(turf, diagonal) \
 	switch(diagonal){ \
 		if(SOUTHWEST) { northeast = turf; turf.lc_bottomleft = src; } \
@@ -51,8 +46,6 @@
 	y = new_turf.y + (vertical   == NORTH ? 0.5 : -0.5)
 
 	var/turf/T
-//	var/i
-
 	// Build diagonal one
 	T = get_step(new_turf, diagonal)
 	if(T)
@@ -72,15 +65,11 @@
 
 /datum/lighting_corner/proc/update_active()
 	active = FALSE
-	var/turf/T
-	var/thing
-	for (thing in masters)
-		T = thing
-		if (T.lighting_object)
-			active = TRUE
+	if(northeast?.lighting_object || northwest?.lighting_object || southeast?.lighting_object || southwest?.lighting_object)
+		active = TRUE
 
 // God that was a mess, now to do the rest of the corner code! Hooray!
-/datum/lighting_corner/proc/update_lumcount(var/delta_r, var/delta_g, var/delta_b)
+/datum/lighting_corner/proc/update_lumcount(delta_r, delta_g, delta_b)
 
 	if ((abs(delta_r)+abs(delta_g)+abs(delta_b)) == 0)
 		return
@@ -117,22 +106,21 @@
 	#endif
 	cache_mx = round(mx, LIGHTING_ROUND_VALUE)
 
-	for (var/TT in masters)
-		var/turf/T = TT
-		if (T.lighting_object)
-			if (!T.lighting_object.needs_update)
-				T.lighting_object.needs_update = TRUE
-				GLOB.lighting_update_objects += T.lighting_object
-
+	#define QUEUE(turf) if(turf?.lighting_object && !turf.lighting_object.needs_update) { turf.lighting_object.needs_update = TRUE; GLOB.lighting_update_objects += turf.lighting_object }
+	QUEUE(northeast)
+	QUEUE(northwest)
+	QUEUE(southeast)
+	QUEUE(southwest)
+	#undef QUEUE
 
 /datum/lighting_corner/dummy/New()
 	return
 
 
-/datum/lighting_corner/Destroy(var/force)
+/datum/lighting_corner/Destroy(force)
 	if (!force)
 		return QDEL_HINT_LETMELIVE
 
-	stack_trace("Ok, Look, /tg/, I need you to find whatever fucker decided to call qdel on a fucking lighting corner, then tell him very nicely and politely that he is 100% retarded and needs his head checked. Thanks. Send them my regards by the way.")
+	stack_trace("Ok, Look, /tg/, I need you to find whatever fucker decided to call qdel on a fucking lighting corner, then tell him very nicely and politely that he is 100% stupid and needs his head checked. Thanks. Send them my regards by the way.")
 
 	return ..()
