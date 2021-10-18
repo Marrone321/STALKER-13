@@ -13,7 +13,7 @@
 
 SUBSYSTEM_DEF(nightcycle)
 	name = "Day/Night Cycle"
-	wait = 50
+	wait = 5
 	runlevels = RUNLEVEL_LOBBY|RUNLEVEL_SETUP|RUNLEVEL_GAME
 	//var/flags = 0			//see MC.dm in __DEFINES Most flags must be set on world start to take full effect. (You can also restart the mc to force them to process again
 	can_fire = TRUE
@@ -22,22 +22,22 @@ SUBSYSTEM_DEF(nightcycle)
 	var/sunColour
 	var/sunPower = 0.75
 	var/sunRange = 3
-	//var/currentColumn
+	var/currentColumn
 	var/working = 3
 	var/preparing = TRUE
 	var/list/OT
 	var/list/BT
-	//var/doColumns //number of columns to do at a time
+	var/doColumns //number of columns to do at a time
 
 /datum/controller/subsystem/nightcycle/fire(resumed = FALSE)
 	if (preparing)
 		collectTurfs()
-	//if (working)
-	//	doWork()
+//	if (working)
+//		doWork()
 	//	return
 	if (nextBracket())
 		working = 1
-		//currentColumn = 1
+		currentColumn = 1
 
 
 /datum/controller/subsystem/nightcycle/proc/nextBracket()
@@ -73,27 +73,27 @@ SUBSYSTEM_DEF(nightcycle)
 		if ("SUNRISE")
 			to_chat(world, "<b>6:00</b> - Dawn")
 			sunColour = "#ddd1b3"
-			//sunPower = 0.3
+			sunPower = 0.3
 		if ("MORNING")
 			to_chat(world, "<b>6:45</b> - Morning comes")
 			sunColour = "#ddd2e6"
-			//sunPower = 0.5
+			sunPower = 0.5
 		if ("DAYTIME")
 			to_chat(world, "<b>11:45</b> - The day is coming")
 			sunColour = "#dddddd"
-			//sunPower = 0.75
+			sunPower = 0.75
 		if ("AFTERNOON")
 			to_chat(world, "<b>15:45</b> - Dusk")
 			sunColour = "#ddd2e6"
-			//sunPower = 0.5
+			sunPower = 0.5
 		if ("SUNSET")
 			to_chat(world, "<b>21:45</b> - Sunset")
 			sunColour = "#ddaaaa"
-			//sunPower = 0.3
+			sunPower = 0.3
 		if("NIGHTTIME")
 			to_chat(world, "<b>22:30</b> - The night is coming")
 			sunColour = "#00111a"
-			//sunPower = 0.15
+			sunPower = 0.15
 		if("BLOWOUT")
 			sunColour = "#ff3333"
 

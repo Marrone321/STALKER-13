@@ -2,10 +2,10 @@
 #define STAGE_CORNERS  2
 #define STAGE_OVERLAYS 3
 
-//#define STEP_MORNING 0
+#define STEP_MORNING 0
 #define STEP_DAY 1
-//#define STEP_EVENING 2
-//#define STEP_NIGHT 3
+#define STEP_EVENING 2
+#define STEP_NIGHT 3
 
 GLOBAL_LIST_EMPTY(sunlighting_update_lights) 	// List of lighting sources  queued for update.
 GLOBAL_LIST_EMPTY(sunlighting_update_corners) 	// List of lighting corners  queued for update.
@@ -51,7 +51,7 @@ SUBSYSTEM_DEF(sunlight)
 
 	set_time_of_day(STEP_DAY)
 
-	create_all_sunlighting_objects()
+	create_all_lighting_objects()
 
 	//check_cycle()
 	update_color()

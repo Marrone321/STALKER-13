@@ -82,14 +82,14 @@
 	//appearance_flags = NO_CLIENT_COLOR | RESET_TRANSFORM | RESET_ALPHA | PLANE_MASTER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
-/obj/screen/plane_master/sunlighting/New()
-	. = ..()
-	color = SSsunlight.current_color
-	SSsunlight.sunlighting_planes |= src
+///obj/screen/plane_master/sunlighting/New()
+//	. = ..()
+//	color = SSsunlight.current_color
+//	SSsunlight.sunlighting_planes |= src
 
-/obj/screen/plane_master/sunlighting/Destroy()
-	SSsunlight.sunlighting_planes -= src
-	. = ..()
+///obj/screen/plane_master/sunlighting/Destroy()
+//	SSsunlight.sunlighting_planes -= src
+//	. = ..()
 /*
 /obj/screen/plane_master/sunlighting/backdrop(mob/mymob)
 	mymob.overlay_fullscreen("lighting_backdrop_lit", /obj/screen/fullscreen/lighting_backdrop/lit)
